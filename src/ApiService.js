@@ -6,7 +6,7 @@ const ApiService = {
     },
 
     CreateAuthor: author => {
-        return fetch('http://localhost:8000/api/autor', 
+        return fetch('https://react-api-gabriels.herokuapp.com/api/author', 
          {method: 'POST', headers: {'content-type': 'application/json'}, body: author})
          .then(res => res.json());
     },
@@ -20,7 +20,7 @@ const ApiService = {
     },
 
     DeleteAuthor: id => {
-        return fetch(`http://localhost:8000/api/autor/${id}`, 
+        return fetch(`https://react-api-gabriels.herokuapp.com/api/author/${id}`, 
         {method: 'DELETE', headers: {'content-type': 'application/json'}})
         .then(res => res.json());
     }

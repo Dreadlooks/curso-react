@@ -16,7 +16,7 @@ const TableBody = props => {
     const rolls = props.authors.map((line, index) => {
         return (
             <tr key={index}>
-                <td>{line.name}</td>
+                <td>{line.author}</td>
                 <td>{line.book}</td>
                 <td>{line.price}</td>
                 <td><button className="waves-effect waves-light btn light-blue lighten-2" onClick = {() => {props.deleteAuthor(index)}}>Remover</button></td>
