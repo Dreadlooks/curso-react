@@ -5,26 +5,15 @@ import Table from './Table';
 import Form from './Form';
 import Header from './Header';
 import PopUp from './PopUp';
+import ApiService from './ApiService';
 
 class App extends Component {
-  state = {
-    authors : [
-      {
-        name: 'Gabriel',
-        book: 'React',
-        price: '1000'
-      },
-      {
-        name: 'Verônica',
-        book: 'Java',
-        price: '99'
-      },
-      {
-        name: 'Vini',
-        book: 'Design',
-        price: '150'
-      }
-    ],
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      authors : [],
+    }
   };
 
   deleteAuthor = index => {
@@ -36,6 +25,7 @@ class App extends Component {
         return position !== index;
       })
     });
+
     PopUp.showMessage('success', 'Autor removido!');
   }
 
@@ -44,7 +34,12 @@ class App extends Component {
     PopUp.showMessage('success', 'Cadastro realizado com sucesso!');
   }
 
+  componentDidMount() {
+    ApiService.FindAll().then(res => { this.setState({authors: [...this.state.authors, ...res.data]})});
+  }
+
   render() {
+    
     return(
       <React.Fragment>
           <Header/>
