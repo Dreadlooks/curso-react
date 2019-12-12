@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
 import Table from './Table';
-import CountClicks from './CountClicks';
 import Form from './Form';
 import Header from './Header';
+import PopUp from './PopUp';
 
 class App extends Component {
   state = {
@@ -36,10 +36,12 @@ class App extends Component {
         return position !== index;
       })
     });
+    PopUp.showMessage('success', 'Autor removido!');
   }
 
   submitListener = author => {
-    this.setState({ authors:[ ...this.state.authors, author]})
+    this.setState({ authors:[ ...this.state.authors, author]});
+    PopUp.showMessage('success', 'Cadastro realizado com sucesso!');
   }
 
   render() {
@@ -48,7 +50,6 @@ class App extends Component {
           <Header/>
           <div className="container">
             <Table authors = { this.state.authors } deleteAuthor = {this.deleteAuthor}></Table>
-            <CountClicks/>
             <Form submitListener = {this.submitListener}/>
           </div>
       </React.Fragment>
