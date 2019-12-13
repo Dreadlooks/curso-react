@@ -1,6 +1,7 @@
 import React, {Fragment, Component} from 'react';
 import Header from './Header';
 import DataTable from './DataTable';
+import ApiService from './ApiService';
 
 class Authors extends Component {
    
@@ -9,25 +10,14 @@ class Authors extends Component {
 
         this.state = {
             authors : [
-              {
-                name: 'Gabriel',
-                book: 'React',
-                price: '1000'
-              },
-              {
-                name: 'Verônica',
-                book: 'Java',
-                price: '99'
-              },
-              {
-                name: 'Yuri',
-                book: 'Java top',
-                price: '150'
-              }
             ],
 
             title: 'Autores'
           };
+    }
+
+    componentDidMount() {
+        ApiService.FindAuthorNames().then(res => { this.setState({authors: [...this.state.authors, ...res.data]})});
     }
 
     render() {
@@ -37,7 +27,7 @@ class Authors extends Component {
                 <div className="container">
                     <h1 className="center">Autores</h1>
                     <div>
-                        <DataTable data={this.state.authors} title={this.state.title} column={['name']}/>
+                        <DataTable data={this.state.authors} title={this.state.title} column={['author']}/>
                     </div>
                 </div>
             </Fragment>

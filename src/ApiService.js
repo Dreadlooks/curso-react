@@ -12,7 +12,7 @@ const ApiService = {
     },
 
     FindAuthorNames: () => {
-        return fetch('http://localhost:8000/api/autor/nome').then(res => res.json());
+        return fetch('https://react-api-gabriels.herokuapp.com/api/authors').then(res => res.json());
     },
 
     FindBooks: () => {
