@@ -16,22 +16,28 @@ class App extends Component {
     }
   };
 
-  deleteAuthor = index => {
+  deleteAuthor = id => {
 
     const { authors } = this.state;
 
     this.setState({
-        authors : authors.filter((author, position) => {
-        return position !== index;
+        authors : authors.filter((author) => {
+        return author.id !== id;
       })
     });
 
     PopUp.showMessage('success', 'Autor removido!');
+    ApiService.DeleteAuthor(id);
   }
 
   submitListener = author => {
-    this.setState({ authors:[ ...this.state.authors, author]});
-    PopUp.showMessage('success', 'Cadastro realizado com sucesso!');
+    ApiService.CreateAuthor(JSON.stringify(author))
+    .then(console.log(JSON.stringify(author)))
+    .then(res => res.data)
+    .then(author => {
+      this.setState({ authors:[...this.state.authors, author]});
+      PopUp.showMessage('success', "Autor adicionado com sucesso");
+    });
   }
 
   componentDidMount() {
