@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import 'materialize-css/dist/css/materialize.min.css';
 import Table from './Table';
@@ -12,47 +12,59 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authors : [],
+      authors: [],
     }
   };
 
   deleteAuthor = id => {
-
     const { authors } = this.state;
 
-    this.setState({
-        authors : authors.filter((author) => {
-        return author.id !== id;
-      })
+    const updatedAuthors = authors.filter(author => {
+      return author.id !== id
     });
 
-    PopUp.showMessage('success', 'Autor removido!');
-    ApiService.DeleteAuthor(id);
+    ApiService.DeleteAuthor(id)
+      .then(res => ApiService.ErrorHandler(res))
+      .then(res => {
+        if (res.message === 'deleted') {
+          this.setState({ authors: [...updatedAuthors] });
+          PopUp.showMessage('success', "Autor removido com sucesso");
+        }
+      })
+      .catch(err => PopUp.showMessage('error', "Erro na comunicação com a API ao tentar remover o autor"))
   }
+
 
   submitListener = author => {
     ApiService.CreateAuthor(JSON.stringify(author))
-    .then(console.log(JSON.stringify(author)))
-    .then(res => res.data)
-    .then(author => {
-      this.setState({ authors:[...this.state.authors, author]});
-      PopUp.showMessage('success', "Autor adicionado com sucesso");
-    });
+      .then(console.log(JSON.stringify(author)))
+      .then(res => res.data)
+      .then(author => {
+        this.setState({ authors: [...this.state.authors, author] });
+        PopUp.showMessage('success', "Autor adicionado com sucesso");
+      });
   }
 
   componentDidMount() {
-    ApiService.FindAll().then(res => { this.setState({authors: [...this.state.authors, ...res.data]})});
+    ApiService.FindAll()
+      .then(res => ApiService.ErrorHandler(res))
+      .then(res => {
+        if (res.message === 'success') {
+          this.setState({ authors: [...this.state.authors, ...res.data] })
+        }
+      })
+      .catch(error => PopUp.showMessage('error', "Não foi possivel carregar os autores"));
   }
 
   render() {
-    
-    return(
+
+    return (
       <React.Fragment>
-          <Header/>
-          <div className="container">
-            <Table authors = { this.state.authors } deleteAuthor = {this.deleteAuthor}></Table>
-            <Form submitListener = {this.submitListener}/>
-          </div>
+        <Header />
+        <div className="container">
+          <Table authors={this.state.authors} deleteAuthor={this.deleteAuthor}></Table>
+          <Form submitListener={this.submitListener} />
+        </div>
       </React.Fragment>
     );
   }

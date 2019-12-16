@@ -1,8 +1,10 @@
+import axios from 'axios';
+
 const ApiService = {
 
     FindAll: () => {
 
-        return fetch('https://react-api-gabriels.herokuapp.com/api/authors').then(res => res.json());
+        return fetch('https://react-api-gabriels.herokuapp.com/api/authors');
     },
 
     CreateAuthor: author => {
@@ -12,17 +14,23 @@ const ApiService = {
     },
 
     FindAuthorNames: () => {
-        return fetch('https://react-api-gabriels.herokuapp.com/api/authors').then(res => res.json());
+        return axios.get('https://react-api-gabriels.herokuapp.com/api/authors');
     },
 
     FindBooks: () => {
-        return fetch('https://react-api-gabriels.herokuapp.com/api/authors/book').then(res => res.json());
+        return axios.get('https://react-api-gabriels.herokuapp.com/api/authors');
     },
 
     DeleteAuthor: id => {
         return fetch(`https://react-api-gabriels.herokuapp.com/api/authors/${id}`, 
-        {method: 'DELETE', headers: {'content-type': 'application/json'}})
-        .then(res => res.json());
+        {method: 'DELETE', headers: {'content-type': 'application/json'},});
+    }, 
+
+    ErrorHandler: res =>{
+        if(!res.ok){
+            throw Error(res.responseText);
+        }
+        return res.json();
     }
 }
 
