@@ -43,7 +43,7 @@ class App extends Component {
         this.setState({ authors: [...this.state.authors, author] });
         PopUp.showMessage('success', "Autor adicionado com sucesso");
         }
-      }).catch(err =>PopUp.exibeMensagem('error', "Erro ao tentar criar o autor"));
+      }).catch(err =>PopUp.showMessage('error', "Erro ao tentar criar o autor"));
   }
 
   componentDidMount() {
