@@ -31,18 +31,19 @@ class App extends Component {
           PopUp.showMessage('success', "Autor removido com sucesso");
         }
       })
-      .catch(err => PopUp.showMessage('error', "Erro na comunicação com a API ao tentar remover o autor"))
+      .catch(err => PopUp.showMessage('error', "Erro ao tentar remover o autor"))
   }
 
 
   submitListener = author => {
     ApiService.CreateAuthor(JSON.stringify(author))
-      .then(console.log(JSON.stringify(author)))
-      .then(res => res.data)
-      .then(author => {
+      .then(res => ApiService.ErrorHandler(res))
+      .then(res => {
+        if(res.message === 'success') {
         this.setState({ authors: [...this.state.authors, author] });
         PopUp.showMessage('success', "Autor adicionado com sucesso");
-      });
+        }
+      }).catch(err =>PopUp.exibeMensagem('error', "Erro ao tentar criar o autor"));
   }
 
   componentDidMount() {
